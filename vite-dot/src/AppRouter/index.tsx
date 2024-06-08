@@ -21,12 +21,12 @@ const AppRouter: React.FC = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-
+  const token = localStorage.getItem("token");
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        {isAuthenticated ? (
+        {isAuthenticated || token ? (
           <Route
             path="*"
             element={
