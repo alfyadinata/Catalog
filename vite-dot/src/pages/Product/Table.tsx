@@ -1,41 +1,21 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
 import MyTable from "@/components/MyTable";
 import Modal from "@/components/Modal";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import useProducts from "@/hooks/useProducts";
+import useProducts, { CategorySelect } from "@/hooks/useProducts";
 import Select from "react-select";
+import useCategories from "@/hooks/useCategories";
+import { TableColumn } from "react-data-table-component";
 
 export interface Product {
   id: number;
   name: string;
   price: number;
-  category: string;
+  category: CategorySelect;
   description?: string;
 }
-
-const initialData: Product[] = [
-  {
-    id: 1,
-    name: "Product 1",
-    price: 29,
-    category: "Category 1",
-    description: "Description 1",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    price: 49,
-    category: "Category 2",
-    description: "Description 2",
-  },
-];
-
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
 
 const columns = [
   {
@@ -58,7 +38,7 @@ const columns = [
     selector: (row: Product) => row.category,
     sortable: true,
   },
-];
+] as TableColumn<Product>[];
 
 const ProductList: React.FC = () => {
   const {
@@ -71,7 +51,16 @@ const ProductList: React.FC = () => {
     handleDelete,
     handleSearch,
     handleChange,
-  } = useProducts(initialData);
+    handleSubmit,
+  } = useProducts();
+  const { categories } = useCategories();
+  const [option, setOption] = useState<any>([]);
+  useEffect(() => {
+    const filtered = categories.map((item) => {
+      return { label: item.name, value: item.id };
+    });
+    setOption(filtered);
+  }, [categories.length]);
 
   return (
     <div>
@@ -87,7 +76,7 @@ const ProductList: React.FC = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            closeModal();
+            handleSubmit();
           }}
           className="p-4 flex flex-col"
         >
@@ -111,9 +100,14 @@ const ProductList: React.FC = () => {
             className="mb-4"
           />
           <Select
-            options={options}
+            options={option}
             className="mb-4 border rounded focus:outline-none focus:ring-1 focus:ring-red-500"
             placeholder="Category"
+            required
+            onChange={(row) => {
+              handleChange("category", row);
+            }}
+            value={formData?.category}
           />
           <Input
             type="text"

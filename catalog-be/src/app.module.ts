@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
 // import { CreateCategoryTable1717931877810 } from './migrations/1717931877810-CreateCategoryTable';
 // import { CreateProductTable1717931914051 } from './migrations/1717931914051-CreateProductTable';
 
@@ -28,6 +29,7 @@ import { CategoryModule } from './category/category.module';
     }),
     UserModule,
     CategoryModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],

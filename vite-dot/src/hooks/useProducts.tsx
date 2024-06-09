@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+import api from "@/helpers/api";
 
+export interface CategorySelect {
+  label: string;
+  value: number;
+}
 interface Product {
   id: number;
   name: string;
   price: number;
-  category: string;
+  category: CategorySelect;
   description?: string;
 }
 
@@ -15,47 +20,84 @@ interface ProductsHook {
   products: Product[];
   openModal: () => void;
   closeModal: () => void;
-  handleCreate: () => void;
-  handleEdit: (row: Product) => void;
-  handleDelete: (row: Product) => void;
+  handleCreate: (data: Product) => Promise<void>;
+  handleEdit: (data: Product) => Promise<void>;
+  handleDelete: (data: Product) => Promise<void>;
   handleSearch: (query: string) => void;
-  handleChange: <K extends keyof Product>(key: K, value: Product[K]) => void;
+  handleChange: (key: keyof Product, value: any) => void;
+  handleSubmit: () => void;
 }
 
-const useProducts = (initialData: Product[]) : ProductsHook => {
-  const [isOpen, setIsOpen] = useState(false);
+const useProducts = (): ProductsHook => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState<Product | null>(null);
-  const [products, setProducts] = useState<Product[]>(initialData);
+  const [products, setProducts] = useState<Product[]>([]);
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-  const handleCreate = () => {
-    setFormData(null);
-    openModal();
+  const fetchProducts = async () => {
+    try {
+      setFormData(null);
+      const response = await api.get<Product[]>("/products"); // Fetch products from API
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
   };
 
-  const handleEdit = (row: Product) => {
-    setFormData(row);
-    openModal();
+  const handleCreate = async () => {
+    try {
+      const data = { ...formData, category_id: formData?.category.value };
+      delete data?.category;
+      await api.post("/products", data);
+      closeModal();
+      fetchProducts();
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
   };
 
-  const handleDelete = (row: Product) => {
-    setProducts(prevProducts => prevProducts.filter(product => product.id !== row.id));
+  const handleEdit = async () => {
+    try {
+      const data = { ...formData, category_id: formData?.category.value };
+      delete data?.category;
+      await api.put(`/products/${data?.id}`, data);
+      closeModal();
+      fetchProducts();
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
+  const handleDelete = async (row: Product) => {
+    try {
+      await api.delete(`/products/${row?.id}`);
+      fetchProducts();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
 
   const handleSearch = (query: string) => {
     // Implement search functionality
-    console.log('Search', query);
+    console.log("Search", query);
   };
 
-  const handleChange = <K extends keyof Product>(key: K, value: Product[K]) => {
-    setFormData((prevFormData:any) => ({
-      ...(prevFormData || {}),
+  const handleChange = (key: keyof Product, value: any) => {
+    setFormData((prevFormData: any) => ({
+      ...(prevFormData || {} || null),
       [key]: value,
     }));
   };
 
+  const handleSubmit = () => {
+    formData?.id ? handleEdit() : handleCreate();
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
   return {
     isOpen,
     formData,
@@ -67,6 +109,7 @@ const useProducts = (initialData: Product[]) : ProductsHook => {
     handleDelete,
     handleSearch,
     handleChange,
+    handleSubmit,
   };
 };
 

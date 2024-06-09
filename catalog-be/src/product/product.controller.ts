@@ -3,20 +3,27 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto, UpdateProductDto } from './product-dto';
 
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  async create(@Body() createProductDto: any) {
+    try {
+      console.log('createProductDto', createProductDto);
+      const createdProduct = await this.productService.create(createProductDto);
+      console.log('createdProduct', createdProduct);
+      return createdProduct;
+    } catch (error) {
+      console.error('Error creating product:', error);
+      throw error; // Rethrow the error to handle it globally
+    }
   }
 
   @Get()
@@ -29,8 +36,8 @@ export class ProductController {
     return this.productService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateProductDto: any) {
     return this.productService.update(+id, updateProductDto);
   }
 
