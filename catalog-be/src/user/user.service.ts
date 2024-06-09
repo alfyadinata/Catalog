@@ -6,7 +6,7 @@ import { RegisterDto, LoginDto } from './auth-dto';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 
-const mySecret = process.env.SECRET_JWT;
+const mySecret = 'alfyadinata';
 
 @Injectable()
 export class UserService {
@@ -17,7 +17,6 @@ export class UserService {
 
   async register(registerDto: RegisterDto): Promise<User> {
     const { username, password } = registerDto;
-
     // Check if user with the given username already exists
     const existingUser = await this.userRepository.findOne({
       where: { username },
@@ -38,6 +37,7 @@ export class UserService {
   }
 
   async login(loginDto: LoginDto): Promise<string> {
+    console.log('mySecret', mySecret);
     const { username, password } = loginDto;
 
     // Find the user by username

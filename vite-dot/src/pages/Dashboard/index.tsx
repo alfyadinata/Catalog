@@ -1,7 +1,5 @@
 import React from "react";
 import Card from "@/components/Card";
-import Button from "@/components/Button";
-import Input from "@/components/Input";
 
 const Dashboard: React.FC = () => {
   const productCount = 100;
@@ -19,10 +17,6 @@ const Dashboard: React.FC = () => {
           <h3 className="text-xl font-semibold mb-2">Categories</h3>
           <p className="text-4xl font-bold">{categoryCount}</p>
         </Card>
-      </div>
-      <div className="mt-8">
-        <Input type="text" placeholder="Search products..." />
-        <Button>Search</Button>
       </div>
     </div>
   );

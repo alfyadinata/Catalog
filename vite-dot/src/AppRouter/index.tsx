@@ -8,6 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Login from "@/pages/Login";
+import Register from "@/pages/Register";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Products = lazy(() => import("@/pages/Product"));
@@ -42,6 +43,7 @@ const AppRouter: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         {isAuthenticated || token ? (
           <Route
             path="*"

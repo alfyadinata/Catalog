@@ -1,30 +1,24 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useMutation } from "react-query";
 import api from "@/helpers/api";
-import { login } from "@/store/slices/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const mutation = useMutation(
     async () => {
-      const response = await api.post("/auth/login", {
+      const response = await api.post("/auth/register", {
         username,
         password,
       });
-      if (response.data.length === 0) throw new Error("Invalid credentials");
       return response.data;
     },
     {
-      onSuccess: (data) => {
-        localStorage.setItem("token", data.token);
-        dispatch(login({ token: data.token, username: data.username }));
-        navigate("/");
+      onSuccess: () => {
+        navigate("/login");
       },
     }
   );
@@ -37,7 +31,7 @@ const Login: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block mb-1" htmlFor="username">
@@ -70,18 +64,18 @@ const Login: React.FC = () => {
             className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors duration-200"
             disabled={mutation.isLoading}
           >
-            {mutation.isLoading ? "Logging in..." : "Login"}
+            {mutation.isLoading ? "Registering..." : "Register"}
           </button>
           {mutation.isError && (
             <div className="mt-4 text-red-500">
-              Login failed. Please try again.
+              Registration failed. Please try again.
             </div>
           )}
         </form>
         <div className="mt-4 text-center">
-          <span>Don't have an account? </span>
-          <Link to="/register" className="text-red-600 hover:underline">
-            Register
+          <span>Already have an account? </span>
+          <Link to="/login" className="text-red-600 hover:underline">
+            Login
           </Link>
         </div>
       </div>
@@ -89,4 +83,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;

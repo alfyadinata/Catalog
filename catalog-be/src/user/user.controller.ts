@@ -1,7 +1,6 @@
 // user.controller.ts
 import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { UserService } from './user.service';
-import { RegisterDto, LoginDto } from './auth-dto';
 import { User } from 'src/entities/user.entity';
 
 @Controller('auth')
@@ -9,12 +8,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('register')
-  async register(@Body() registerDto: RegisterDto): Promise<User> {
+  async register(@Body() registerDto: any): Promise<User> {
     return this.userService.register(registerDto);
   }
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
+  async login(@Body() loginDto: any): Promise<{ token: string }> {
+    console.log('contr loginDto', loginDto);
     const token = await this.userService.login(loginDto);
     return { token };
   }
