@@ -28,6 +28,7 @@ interface ProductsHook {
   handleSearch: (query: string) => void;
   handleChange: (key: keyof Product, value: any) => void;
   handleSubmit: () => void;
+  setFormData: (row: Product) => void;
 }
 
 const useProducts = (): ProductsHook => {
@@ -35,8 +36,13 @@ const useProducts = (): ProductsHook => {
   const [formData, setFormData] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
 
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const openModal = () => {
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setFormData(null);
+    setIsOpen(false);
+  };
 
   const fetchProducts = async () => {
     try {
@@ -112,6 +118,7 @@ const useProducts = (): ProductsHook => {
     handleSearch,
     handleChange,
     handleSubmit,
+    setFormData,
   };
 };
 

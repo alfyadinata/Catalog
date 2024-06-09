@@ -47,28 +47,42 @@ const ProductList: React.FC = () => {
     products,
     openModal,
     closeModal,
-    handleEdit,
     handleDelete,
     handleSearch,
     handleChange,
     handleSubmit,
+    setFormData,
   } = useProducts();
   const { categories } = useCategories();
   const [option, setOption] = useState<any>([]);
   useEffect(() => {
+    if (formData?.id) {
+      const cat = formData?.category;
+      setFormData({
+        ...formData,
+        category: {
+          ...cat,
+          label: cat?.name,
+          value: cat?.id,
+        },
+      });
+    }
     const filtered = categories.map((item) => {
       return { label: item.name, value: item.id };
     });
     setOption(filtered);
-  }, [categories.length]);
-
+  }, [categories.length, formData?.id]);
+  console.log("cat", formData);
   return (
     <div>
       <MyTable
         columns={columns}
         data={products}
         onCreate={openModal}
-        onEdit={handleEdit}
+        onEdit={(row) => {
+          setFormData(row);
+          openModal();
+        }}
         onDelete={handleDelete}
         onSearch={handleSearch}
       />
