@@ -109,13 +109,6 @@ const ProductList: React.FC = () => {
             }}
             value={formData?.category}
           />
-          <Input
-            type="text"
-            placeholder="Description"
-            value={formData ? formData.description : ""}
-            onChange={(e) => handleChange("description", e.target.value)}
-            className="mb-4"
-          />
           <div className="flex justify-end">
             <Button type="submit">{formData?.id ? "Update" : "Create"}</Button>
           </div>
