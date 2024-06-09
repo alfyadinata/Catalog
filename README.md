@@ -70,7 +70,6 @@ Copy the .env.example file in the root directory of the project and create a new
 ## Run database migrations
 
 ```bash
-# development
 $ npm run db:migration:run
 ```
 
