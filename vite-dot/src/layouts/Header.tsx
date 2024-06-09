@@ -12,6 +12,7 @@ const Header: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = () => {
+    localStorage.clear();
     dispatch(logout());
     navigate("/login");
   };
@@ -22,7 +23,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="w-full bg-white shadow-md p-4 flex justify-between items-center">
-      <h1 className="text-xl font-bold">Dashboard</h1>
+      <h1 className="text-xl font-bold">Catalog App</h1>
       <div className="relative">
         <button
           onClick={toggleDropdown}
