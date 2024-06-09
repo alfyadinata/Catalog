@@ -1,0 +1,18 @@
+{
+  "type": "postgresql",
+  "username": "postgres",
+  "password": "password",
+  "database": "catalog",
+  "host": "localhost",
+  "port": "5432",
+  "dialect": "postgresql",
+  "logging": true,
+  "define": {
+    "charset": "utf8",
+    "collate": "utf8_general_ci"
+  },
+  "cli": {
+    "migrationsDir": "src/migrations"
+  },
+  "migrations": ["migrations/**/*.ts"]
+}
