@@ -1,100 +1,30 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+// user.controller.ts
+import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { RegisterDto, LoginDto } from './auth-dto';
+import { User } from 'src/entities/user.entity';
 
-@Controller('users')
+@Controller('auth')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    try {
-      await this.userService.create(createUserDto);
-
-      return {
-        success: true,
-        message: 'User Created Successfully',
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
+  @Post('register')
+  async register(@Body() registerDto: RegisterDto): Promise<User> {
+    return this.userService.register(registerDto);
   }
 
-  @Get()
-  async findAll() {
-    try {
-      const data = await this.userService.findAll();
-      return {
-        success: true,
-        data,
-        message: 'User Fetched Successfully',
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
+  @Post('login')
+  async login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
+    const token = await this.userService.login(loginDto);
+    return { token };
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    try {
-      const data = await this.userService.findOne(+id);
-      return {
-        success: true,
-        data,
-        message: 'User Fetched Successfully',
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.message,
-      };
+  @Post('verify-token')
+  async verifyToken(@Body() { token }: { token: string }): Promise<User> {
+    const user = await this.userService.getUserFromToken(token);
+    if (!user) {
+      throw new BadRequestException('User not found');
     }
-  }
-
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    try {
-      await this.userService.update(+id, updateUserDto);
-      return {
-        success: true,
-        message: 'User Updated Successfully',
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    try {
-      await this.userService.remove(+id);
-      return {
-        success: true,
-        message: 'User Deleted Successfully',
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
+    return user;
   }
 }
