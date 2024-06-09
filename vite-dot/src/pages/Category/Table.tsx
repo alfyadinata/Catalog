@@ -3,81 +3,50 @@ import MyTable from "@/components/MyTable";
 import Modal from "@/components/Modal";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import useProducts from "@/hooks/useProducts";
-import Select from "react-select";
+import useCategories, { Category } from "@/hooks/useCategories"; // Assuming the hook exports Category type
+import { TableColumn } from "react-data-table-component";
 
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  category: string;
-  description?: string;
-}
-
-const initialData: Product[] = [
-  {
-    id: 1,
-    name: "Product 1",
-    price: 29,
-    category: "Category 1",
-    description: "Description 1",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    price: 49,
-    category: "Category 2",
-    description: "Description 2",
-  },
-];
-
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
+const initialData: Category[] = [
+  { id: 1, name: "Category 1", description: "Description 1" },
+  { id: 2, name: "Category 2", description: "Description 2" },
 ];
 
 const columns = [
   {
     name: "ID",
-    selector: (row: Product) => row.id,
+    selector: (row: Category) => row.id,
     sortable: true,
   },
   {
     name: "Name",
-    selector: (row: Product) => row.name,
+    selector: (row: Category) => row.name || "",
     sortable: true,
   },
   {
-    name: "Price",
-    selector: (row: Product) => row.price,
+    name: "Description",
+    selector: (row: Category) => row.description || "",
     sortable: true,
   },
-  {
-    name: "Category",
-    selector: (row: Product) => row.category,
-    sortable: true,
-  },
-];
+] as TableColumn<Category>[];
 
-const ProductList: React.FC = () => {
+const CategoryList: React.FC = () => {
   const {
     isOpen,
     formData,
-    products,
+    categories,
     openModal,
     closeModal,
     handleEdit,
     handleDelete,
     handleSearch,
     handleChange,
-  } = useProducts(initialData);
+  } = useCategories(initialData);
 
   return (
     <div>
       <MyTable
         columns={columns}
-        data={products}
+        data={categories}
         onCreate={openModal}
         onEdit={handleEdit}
         onDelete={handleDelete}
@@ -92,7 +61,7 @@ const ProductList: React.FC = () => {
           className="p-4 flex flex-col"
         >
           <h2 className="text-lg font-semibold mb-4">
-            {formData?.id ? "Edit Product" : "Create Product"}
+            {formData?.id ? "Edit Category" : "Create Category"}
           </h2>
           <Input
             type="text"
@@ -101,19 +70,6 @@ const ProductList: React.FC = () => {
             onChange={(e) => handleChange("name", e.target.value)}
             required
             className="mb-4"
-          />
-          <Input
-            type="number"
-            placeholder="Price"
-            value={formData ? formData.price : ""}
-            onChange={(e) => handleChange("price", parseFloat(e.target.value))}
-            required
-            className="mb-4"
-          />
-          <Select
-            options={options}
-            className="mb-4 border rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            placeholder="Category"
           />
           <Input
             type="text"
@@ -131,4 +87,4 @@ const ProductList: React.FC = () => {
   );
 };
 
-export default ProductList;
+export default CategoryList;

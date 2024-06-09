@@ -13,16 +13,31 @@ const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const Products = lazy(() => import("@/pages/Product"));
 const Users = lazy(() => import("@/pages/Users"));
 const Settings = lazy(() => import("@/pages/Settings"));
+const Categories = lazy(() => import("@/pages/Category"));
 
 import Sidebar from "@/layouts/Sidebar";
 import Header from "@/layouts/Header";
 import Loading from "@/components/Loading";
+
+interface RouteItem {
+  path: string;
+  element: JSX.Element;
+}
+
+const privateRoutes: RouteItem[] = [
+  { path: "/", element: <Dashboard /> },
+  { path: "/products", element: <Products /> },
+  { path: "/users", element: <Users /> },
+  { path: "/settings", element: <Settings /> },
+  { path: "/categories", element: <Categories /> }, // New route for categories
+];
 
 const AppRouter: React.FC = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
   const token = localStorage.getItem("token");
+
   return (
     <Router>
       <Routes>
@@ -38,10 +53,13 @@ const AppRouter: React.FC = () => {
                   <main className="flex-1 bg-gray-100 p-6">
                     <Suspense fallback={<Loading />}>
                       <Routes>
-                        <Route path="/" element={<Dashboard />} />
-                        <Route path="/products" element={<Products />} />
-                        <Route path="/users" element={<Users />} />
-                        <Route path="/settings" element={<Settings />} />
+                        {privateRoutes.map((route, index) => (
+                          <Route
+                            key={index}
+                            path={route.path}
+                            element={route.element}
+                          />
+                        ))}
                         <Route path="*" element={<Navigate to="/" />} />
                       </Routes>
                     </Suspense>

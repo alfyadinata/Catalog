@@ -1,6 +1,22 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaTachometerAlt, FaUsers, FaCogs, FaCarAlt } from "react-icons/fa";
+import { FaTachometerAlt, FaCarAlt, FaOptinMonster } from "react-icons/fa";
+
+interface MenuItem {
+  path: string;
+  label: string;
+  icon: React.ReactNode;
+}
+
+const menuItems: MenuItem[] = [
+  { path: "/", label: "Dashboard", icon: <FaTachometerAlt className="mr-3" /> },
+  { path: "/products", label: "Products", icon: <FaCarAlt className="mr-3" /> },
+  {
+    path: "/categories",
+    label: "Categories",
+    icon: <FaOptinMonster className="mr-3" />,
+  },
+];
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
@@ -15,42 +31,18 @@ const Sidebar: React.FC = () => {
         <span className="ml-3">Admin Panel</span>
       </div>
       <nav className="mt-6">
-        <Link
-          to="/"
-          className={`flex items-center py-3 px-6 text-white hover:bg-red-700 transition-colors duration-200 ${isActive(
-            "/"
-          )}`}
-        >
-          <FaTachometerAlt className="mr-3" />
-          Dashboard
-        </Link>
-        <Link
-          to="/products"
-          className={`flex items-center py-3 px-6 text-white hover:bg-red-700 transition-colors duration-200 ${isActive(
-            "/products"
-          )}`}
-        >
-          <FaCarAlt className="mr-3" />
-          Product
-        </Link>
-        <Link
-          to="/users"
-          className={`flex items-center py-3 px-6 text-white hover:bg-red-700 transition-colors duration-200 ${isActive(
-            "/users"
-          )}`}
-        >
-          <FaUsers className="mr-3" />
-          Users
-        </Link>
-        <Link
-          to="/settings"
-          className={`flex items-center py-3 px-6 text-white hover:bg-red-700 transition-colors duration-200 ${isActive(
-            "/settings"
-          )}`}
-        >
-          <FaCogs className="mr-3" />
-          Settings
-        </Link>
+        {menuItems.map((item, index) => (
+          <Link
+            key={index}
+            to={item.path}
+            className={`flex items-center py-3 px-6 text-white hover:bg-red-700 transition-colors duration-200 ${isActive(
+              item.path
+            )}`}
+          >
+            {item.icon}
+            {item.label}
+          </Link>
+        ))}
       </nav>
     </div>
   );
