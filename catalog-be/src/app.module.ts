@@ -4,8 +4,9 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
-import { CreateCategoryTable1717931877810 } from './migrations/1717931877810-CreateCategoryTable';
-import { CreateProductTable1717931914051 } from './migrations/1717931914051-CreateProductTable';
+import { CategoryModule } from './category/category.module';
+// import { CreateCategoryTable1717931877810 } from './migrations/1717931877810-CreateCategoryTable';
+// import { CreateProductTable1717931914051 } from './migrations/1717931914051-CreateProductTable';
 
 @Module({
   imports: [
@@ -20,12 +21,13 @@ import { CreateProductTable1717931914051 } from './migrations/1717931914051-Crea
       synchronize: false,
       logging: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      migrations: [
-        CreateCategoryTable1717931877810,
-        CreateProductTable1717931914051,
-      ],
+      // migrations: [
+      //   CreateCategoryTable1717931877810,
+      //   CreateProductTable1717931914051,
+      // ],
     }),
     UserModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
