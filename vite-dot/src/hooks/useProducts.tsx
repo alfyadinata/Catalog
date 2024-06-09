@@ -5,6 +5,8 @@ import api from "@/helpers/api";
 export interface CategorySelect {
   label: string;
   value: number;
+  name: string;
+  id: number;
 }
 interface Product {
   id: number;

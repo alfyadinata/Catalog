@@ -35,7 +35,7 @@ const columns = [
   },
   {
     name: "Category",
-    selector: (row: Product) => row.category,
+    selector: (row: Product) => row.category?.name,
     sortable: true,
   },
 ] as TableColumn<Product>[];
