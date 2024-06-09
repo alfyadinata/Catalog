@@ -26,7 +26,7 @@ const Header: React.FC = () => {
       <div className="relative">
         <button
           onClick={toggleDropdown}
-          className="flex items-center bg-blue-500 text-white py-2 px-4 rounded focus:outline-none"
+          className="flex items-center bg-red-500 text-white py-2 px-4 rounded focus:outline-none"
         >
           <FiUser className="mr-2" />
           {username}

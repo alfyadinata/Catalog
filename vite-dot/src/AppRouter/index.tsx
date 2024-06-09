@@ -10,6 +10,7 @@ import { RootState } from "@/store";
 import Login from "@/pages/Login";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const Products = lazy(() => import("@/pages/Product"));
 const Users = lazy(() => import("@/pages/Users"));
 const Settings = lazy(() => import("@/pages/Settings"));
 
@@ -38,6 +39,7 @@ const AppRouter: React.FC = () => {
                     <Suspense fallback={<Loading />}>
                       <Routes>
                         <Route path="/" element={<Dashboard />} />
+                        <Route path="/products" element={<Products />} />
                         <Route path="/users" element={<Users />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="*" element={<Navigate to="/" />} />

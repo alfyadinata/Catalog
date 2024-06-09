@@ -74,7 +74,7 @@ const Login: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors duration-200"
+            className="w-full bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition-colors duration-200"
             disabled={mutation.isLoading}
           >
             {mutation.isLoading ? "Logging in..." : "Login"}
