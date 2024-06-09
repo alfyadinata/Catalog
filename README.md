@@ -23,12 +23,12 @@ Follow these steps to get the application up and running on your local machine:
 1. **Clone the repository:**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/alfyadinata/Catalog.git
    ```
 
 2. **Navigate to the project directory:**
    ```bash
-   cd Catalog-Management-Product
+   cd Catalog/vite-dot
    ```
 3. **Install dependencies:**
 
@@ -50,6 +50,12 @@ Follow these steps to get the application up and running on your local machine:
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Navigate to the backend directory:
+
+```bash
+$ cd Catalog/catalog-be
+```
 
 ## Installation
 
