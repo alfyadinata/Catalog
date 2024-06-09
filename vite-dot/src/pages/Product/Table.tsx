@@ -72,7 +72,6 @@ const ProductList: React.FC = () => {
     });
     setOption(filtered);
   }, [categories.length, formData?.id]);
-  console.log("cat", formData);
   return (
     <div>
       <MyTable
