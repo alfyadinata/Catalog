@@ -6,11 +6,6 @@ import Button from "@/components/Button";
 import useCategories, { Category } from "@/hooks/useCategories"; // Assuming the hook exports Category type
 import { TableColumn } from "react-data-table-component";
 
-const initialData: Category[] = [
-  { id: 1, name: "Category 1", description: "Description 1" },
-  { id: 2, name: "Category 2", description: "Description 2" },
-];
-
 const columns = [
   {
     name: "ID",
@@ -20,11 +15,6 @@ const columns = [
   {
     name: "Name",
     selector: (row: Category) => row.name || "",
-    sortable: true,
-  },
-  {
-    name: "Description",
-    selector: (row: Category) => row.description || "",
     sortable: true,
   },
 ] as TableColumn<Category>[];
@@ -40,8 +30,7 @@ const CategoryList: React.FC = () => {
     handleDelete,
     handleSearch,
     handleChange,
-  } = useCategories(initialData);
-
+  } = useCategories();
   return (
     <div>
       <MyTable
