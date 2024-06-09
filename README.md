@@ -15,7 +15,7 @@ Before running this application, ensure you have the following installed:
 - Node.js (v14.x or later)
 - npm (v6.x or later)
 
-## Getting Started
+## Frontend
 
 Follow these steps to get the application up and running on your local machine:
 
@@ -43,3 +43,38 @@ Follow these steps to get the application up and running on your local machine:
     npm run dev
    ```
    This will start the development server. Open http://localhost:5173 in your browser to view the application.
+
+## Backend
+
+## Description
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Installation
+
+```bash
+$ npm install
+```
+
+## Setup Configuration
+
+Copy the .env.example file in the root directory of the project and create a new file named .env. You can use the following command:
+
+## Run database migrations
+
+````bash
+# development
+$ npm run db:migration:run
+
+## Running the app
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+````
