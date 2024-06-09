@@ -18,6 +18,8 @@ interface CategoriesHook {
   handleDelete: (row: Category) => void;
   handleSearch: (query: string) => void;
   handleChange: <K extends keyof Category>(key: K, value: Category[K]) => void;
+  handleFillEdit: (row: Category) => void;
+  handleSubmit: () => void;
 }
 
 const useCategories = (): CategoriesHook => {
@@ -25,8 +27,14 @@ const useCategories = (): CategoriesHook => {
   const [formData, setFormData] = useState<Category | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const openModal = () => {
+    setFormData(null);
+    setIsOpen(true);
+  };
+  const closeModal = () => {
+    setFormData(null);
+    setIsOpen(false);
+  };
 
   const handleSearch = (query: string) => {
     // Implement search functionality
@@ -43,6 +51,16 @@ const useCategories = (): CategoriesHook => {
     }));
   };
 
+  const fetchCategories = async () => {
+    try {
+      setFormData(null);
+      const response = await api.get<Category[]>("/categories"); // Fetch categories from API
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
   const handleCreate = async () => {
     try {
       const response = await api.post<Category>("/categories", formData); // Create category
@@ -53,17 +71,12 @@ const useCategories = (): CategoriesHook => {
     }
   };
 
-  const handleEdit = async (row: Category) => {
+  const handleEdit = async () => {
     try {
-      const response = await api.put<Category>(
-        `/categories/${row.id}`,
-        formData
-      ); // Update category
-      const updatedCategories = categories.map((category) =>
-        category.id === row.id ? response.data : category
-      );
-      setCategories(updatedCategories);
+      const row = formData;
+      await api.put<Category>(`/categories/${row?.id}`, formData);
       closeModal();
+      fetchCategories();
     } catch (error) {
       console.error("Error updating category:", error);
     }
@@ -72,22 +85,19 @@ const useCategories = (): CategoriesHook => {
   const handleDelete = async (row: Category) => {
     try {
       await api.delete(`/categories/${row.id}`); // Delete category
-      const updatedCategories = categories.filter(
-        (category) => category.id !== row.id
-      );
-      setCategories(updatedCategories);
+      fetchCategories();
     } catch (error) {
       console.error("Error deleting category:", error);
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const response = await api.get<Category[]>("/categories"); // Fetch categories from API
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
+  const handleFillEdit = (row: Category) => {
+    setIsOpen(true);
+    setFormData(row);
+  };
+
+  const handleSubmit = () => {
+    formData?.id ? handleEdit() : handleCreate();
   };
 
   useEffect(() => {
@@ -105,6 +115,8 @@ const useCategories = (): CategoriesHook => {
     handleDelete,
     handleSearch,
     handleChange,
+    handleFillEdit,
+    handleSubmit,
   };
 };
 

@@ -26,10 +26,11 @@ const CategoryList: React.FC = () => {
     categories,
     openModal,
     closeModal,
-    handleEdit,
     handleDelete,
     handleSearch,
     handleChange,
+    handleFillEdit,
+    handleSubmit,
   } = useCategories();
   return (
     <div>
@@ -37,7 +38,7 @@ const CategoryList: React.FC = () => {
         columns={columns}
         data={categories}
         onCreate={openModal}
-        onEdit={handleEdit}
+        onEdit={handleFillEdit}
         onDelete={handleDelete}
         onSearch={handleSearch}
       />
@@ -45,7 +46,7 @@ const CategoryList: React.FC = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            closeModal();
+            handleSubmit();
           }}
           className="p-4 flex flex-col"
         >
@@ -58,13 +59,6 @@ const CategoryList: React.FC = () => {
             value={formData ? formData.name : ""}
             onChange={(e) => handleChange("name", e.target.value)}
             required
-            className="mb-4"
-          />
-          <Input
-            type="text"
-            placeholder="Description"
-            value={formData ? formData.description : ""}
-            onChange={(e) => handleChange("description", e.target.value)}
             className="mb-4"
           />
           <div className="flex justify-end">
