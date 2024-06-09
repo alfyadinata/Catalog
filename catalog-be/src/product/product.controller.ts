@@ -16,9 +16,7 @@ export class ProductController {
   @Post()
   async create(@Body() createProductDto: any) {
     try {
-      console.log('createProductDto', createProductDto);
       const createdProduct = await this.productService.create(createProductDto);
-      console.log('createdProduct', createdProduct);
       return createdProduct;
     } catch (error) {
       console.error('Error creating product:', error);
