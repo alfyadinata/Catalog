@@ -1,22 +1,18 @@
 import { DataSource } from 'typeorm';
 import { Category } from './src/entities/category.entity';
 import { Product } from './src/entities/product.entity';
-// import { CreateCategoryTable1717931877810 } from './src/migrations/1717931877810-CreateCategoryTable';
-// import { CreateProductTable1717931914051 } from './src/migrations/1717931914051-CreateProductTable';
+
+export type DatabaseDialect = 'mysql' | 'mariadb' | 'postgres';
 
 export const AppDataSource = new DataSource({
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: 'password',
-  database: 'catalog',
+  type: (process.env.DATABASE_DIALECT || 'postgres') as DatabaseDialect,
+  host: process.env.POSTGRES_HOST,
+  port: parseInt(process.env.POSTGRES_PORT) || 5432,
+  username: process.env.POSTGRES_USER || 'postgres',
+  password: process.env.POSTGRES_PASSWORD || 'password',
+  database: process.env.POSTGRES_DATABASE || 'catalog',
   synchronize: false,
   logging: true,
   entities: [Category, Product],
-  //   migrations: [
-  //     CreateCategoryTable1717931877810,
-  //     CreateProductTable1717931914051,
-  //   ],
   migrations: ['src/migrations/*.ts'],
 });

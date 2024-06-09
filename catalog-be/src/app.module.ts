@@ -6,14 +6,13 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
-// import { CreateCategoryTable1717931877810 } from './migrations/1717931877810-CreateCategoryTable';
-// import { CreateProductTable1717931914051 } from './migrations/1717931914051-CreateProductTable';
+import { DatabaseDialect } from 'data-source';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'postgres',
+      type: (process.env.DATABASE_DIALECT || 'postgres') as DatabaseDialect,
       host: process.env.POSTGRES_HOST,
       port: parseInt(process.env.POSTGRES_PORT),
       password: process.env.POSTGRES_PASSWORD,
@@ -22,10 +21,6 @@ import { ProductModule } from './product/product.module';
       synchronize: false,
       logging: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      // migrations: [
-      //   CreateCategoryTable1717931877810,
-      //   CreateProductTable1717931914051,
-      // ],
     }),
     UserModule,
     CategoryModule,
