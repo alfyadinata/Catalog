@@ -65,7 +65,7 @@ $ npm install
 
 ## Setup Configuration
 
-Copy the .env.example file in the root directory of the project and create a new file named .env. You can use the following command:
+Copy the .env.example file in the root directory of the project and create a new file named .env
 
 ## Run database migrations
 
