@@ -1,6 +1,7 @@
 # Catalog Management Product
 
 Welcome to Catalog Management Product! This web application helps you manage product catalogs efficiently.
+<img width="1440" alt="image" src="https://github.com/alfyadinata/Catalog/assets/42163566/aace24ba-7e24-48bc-85bc-c1966264aba1">
 
 ## Features
 
